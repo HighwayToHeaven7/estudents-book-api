@@ -17,4 +17,7 @@ public class StudentGroup {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    //exp: A, B, F
+    @Column(nullable = false)
+    private String groupCode;
 }

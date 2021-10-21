@@ -17,4 +17,16 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Integer value;
+
+    // 1 < weight < ?
+    private Integer weight;
+
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subject subject;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }
