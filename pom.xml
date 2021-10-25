@@ -28,6 +28,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.highwaytoheaven.estudentsbook</groupId>
+      <artifactId>highwaytoheaven-estudentsbook-spec</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.27</version>
