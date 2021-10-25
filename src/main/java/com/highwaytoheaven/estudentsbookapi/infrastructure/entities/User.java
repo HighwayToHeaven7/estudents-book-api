@@ -1,16 +1,13 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +22,7 @@ public class User extends BasicEntity {
   @Column(nullable = false)
   private String surname;
 
+  @Column(nullable = false, name = "account_status")
   private Boolean accountStatus = false;
 
   @Enumerated(EnumType.STRING)
@@ -33,12 +31,11 @@ public class User extends BasicEntity {
   @OneToOne(fetch = FetchType.LAZY)
   private ContactDetails contactDetails;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @NotNull
+  @ManyToOne(fetch = FetchType.EAGER)
   private StudentGroup studentGroup;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private List<Grade> gradesList;
-
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    private List<Subject> subjectsList;
+  @Column(nullable = false)
+  @ManyToMany(fetch = FetchType.LAZY)
+  private List<Semester> semesters;
 }

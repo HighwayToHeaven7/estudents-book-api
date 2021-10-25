@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "student_group_table")
 public class StudentGroup extends BasicEntity {
 
-  //exp: A, B, F
-  @Column(nullable = false)
+  @Column(nullable = false, name = "group_code")
   private String groupCode;
 }
