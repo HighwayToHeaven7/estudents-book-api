@@ -1,40 +1,40 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "user_table")
-public class User {
+public class User extends BasicEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String surname;
 
-    @Column(nullable = false)
-    private String surname;
+  private Boolean accountStatus = false;
 
-    private Boolean accountStatus = false;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Role role;
+  @OneToOne(fetch = FetchType.LAZY)
+  private ContactDetails contactDetails;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private ContactDetails contactDetails;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private StudentGroup studentGroup;
+  @ManyToOne(fetch = FetchType.LAZY)
+  private StudentGroup studentGroup;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private List<Grade> gradesList;

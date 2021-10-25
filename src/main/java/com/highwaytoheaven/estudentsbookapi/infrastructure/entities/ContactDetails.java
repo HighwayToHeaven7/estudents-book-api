@@ -1,25 +1,23 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "contact_details_table")
-public class ContactDetails {
+public class ContactDetails extends BasicEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Column(nullable = true)
-    private String phoneNumber;
+  @Column(nullable = true)
+  private String phoneNumber;
 }

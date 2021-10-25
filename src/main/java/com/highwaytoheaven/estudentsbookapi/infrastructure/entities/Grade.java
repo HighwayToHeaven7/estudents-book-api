@@ -1,32 +1,31 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "grade_table")
-public class Grade {
+public class Grade extends BasicEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    private Integer value;
+  private Integer value;
 
-    // 1 < weight < ?
-    private Integer weight;
+  // 1 < weight < ?
+  private Integer weight;
 
-    private String description;
+  private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Subject subject;
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Subject subject;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  private User user;
 }
