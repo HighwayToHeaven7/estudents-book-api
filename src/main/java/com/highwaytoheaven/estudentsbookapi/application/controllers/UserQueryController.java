@@ -1,7 +1,8 @@
-package com.highwaytoheaven.estudentsbookapi.application.controllers.user;
+package com.highwaytoheaven.estudentsbookapi.application.controllers;
 
 import com.highwaytoheaven.api.UserQueryApi;
 import com.highwaytoheaven.model.UserDTO;
+
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

@@ -2,6 +2,8 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
 import javax.persistence.*;
 
+import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.Role;
+import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +24,9 @@ public class User extends BasicEntity {
   @Column(nullable = false)
   private String surname;
 
-  @Column(nullable = false, name = "account_status")
-  private Boolean accountStatus = false;
+//  @Column(name = "account_status")
+  @Enumerated(EnumType.STRING)
+  private UserStatus accountStatus = UserStatus.NEW;
 
   @Enumerated(EnumType.STRING)
   private Role role;
