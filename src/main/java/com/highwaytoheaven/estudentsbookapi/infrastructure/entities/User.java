@@ -27,17 +27,21 @@ public class User extends BasicEntity {
   @Enumerated(EnumType.STRING)
   private UserStatus accountStatus = UserStatus.NEW;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   private Role role;
 
   @OneToOne(fetch = FetchType.LAZY)
   private ContactDetails contactDetails;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.EAGER)
-  private StudentGroup studentGroup;
+//  @NotNull
+//  @ManyToOne(fetch = FetchType.EAGER)
+//  private StudentGroup studentGroup;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
+  private String groupName;
+
+  @Column(nullable = true)
   @ManyToMany(fetch = FetchType.LAZY)
   private List<Semester> semesters;
 }
