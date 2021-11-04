@@ -15,6 +15,7 @@ public class StudentsQueryController implements StudentsQueryApi {
 
     @Override
     public ResponseEntity<List<GroupWithStudentsResponseDTO>> getListOfGrupsWithStudents() {
+//        service.getListOfGroupsWithStudents
         return null;
     }
 
