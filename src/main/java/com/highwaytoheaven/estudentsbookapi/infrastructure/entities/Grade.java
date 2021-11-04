@@ -2,6 +2,7 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
 import javax.persistence.*;
 
+import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.GradeType;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,8 @@ public class Grade extends BasicEntity {
   private Integer weight;
 
   private String description;
+
+  private GradeType gradeType;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)

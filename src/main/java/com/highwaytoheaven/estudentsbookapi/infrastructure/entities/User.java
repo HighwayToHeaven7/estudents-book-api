@@ -5,15 +5,14 @@ import javax.persistence.*;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.Role;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "user_table")
 public class User extends BasicEntity {
