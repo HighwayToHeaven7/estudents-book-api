@@ -1,7 +1,6 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.services;
 
 import com.highwaytoheaven.estudentsbookapi.application.services.StudentsService;
-import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.Semester;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.User;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.SemesterRepository;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.UserRepository;
