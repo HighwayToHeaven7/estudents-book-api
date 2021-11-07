@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface StudentsService {
 
-    List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents() throws Exception;
+    List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents();
     List<StudentDTO> getStudentById(UUID uuid);
     List<GradeDTO> getStudentGradesByStudentId(UUID uuid, @Valid Optional<Integer> optional);
     GradeDTO giveStudentGrade(UUID uuid, UUID uuid1, @Valid GradeUpdateRequestDTO gradeUpdateRequestDTO);

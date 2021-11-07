@@ -38,10 +38,10 @@ public class User extends BasicEntity {
 //  @ManyToOne(fetch = FetchType.EAGER)
 //  private StudentGroup studentGroup;
 
-  @Column(nullable = true)
-  private String groupName;
+//  @Column(nullable = true)
+//  private String groupName;
 
-  @Column(nullable = true)
-  @ManyToMany(fetch = FetchType.LAZY)
-  private List<Semester> semesters;
+//  @Column(nullable = true)
+//  @ManyToMany(fetch = FetchType.LAZY)
+//  private List<Semester> semesters;
 }

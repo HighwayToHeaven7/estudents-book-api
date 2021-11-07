@@ -11,9 +11,11 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from User u where u.accountStatus = 'NEW'")
-    Optional<List<User>> getUsersByAccountStatusIsNew();
+    List<User> getUsersByAccountStatusIsNew();
 
-    //TODO -> add major as parameter
-    @Query("SELECT u FROM User u WHERE u.accountStatus = 'ACTIVE' AND u.role = 'STUDENT'")
-    List<User> getAllActiveStudents();
+    //TODO -> add major as parameter : ?
+//    @Query("SELECT u FROM User u WHERE u.accountStatus = 'ACTIVE' AND u.role = 'STUDENT'")
+//    List<User> getAllActiveStudents();
+
+    List<User> getAllById(UUID uuid);
 }
