@@ -7,8 +7,6 @@ import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserSt
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -23,7 +21,6 @@ public class User extends BasicEntity {
   @Column(nullable = false)
   private String surname;
 
-//  @Column(name = "account_status")
   @Enumerated(EnumType.STRING)
   private UserStatus accountStatus = UserStatus.NEW;
 
@@ -33,15 +30,4 @@ public class User extends BasicEntity {
 
   @OneToOne(fetch = FetchType.LAZY)
   private ContactDetails contactDetails;
-
-//  @NotNull
-//  @ManyToOne(fetch = FetchType.EAGER)
-//  private StudentGroup studentGroup;
-
-//  @Column(nullable = true)
-//  private String groupName;
-
-//  @Column(nullable = true)
-//  @ManyToMany(fetch = FetchType.LAZY)
-//  private List<Semester> semesters;
 }

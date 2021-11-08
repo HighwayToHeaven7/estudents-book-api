@@ -4,36 +4,27 @@ import javax.persistence.*;
 
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.GradeType;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "grade_table")
 public class Grade extends BasicEntity {
 
-  @Column(columnDefinition = "INT(1) UNSIGNED NOT NULL")
-  private Integer value;
+  @Column(nullable = false)
+  private Double value;
 
-  @Column(columnDefinition = "INT(1) UNSIGNED NOT NULL")
-  private Integer weight;
+  @Column(nullable = false)
+  private Double weight;
 
   private String description;
 
+  @Enumerated(EnumType.STRING)
   private GradeType gradeType;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Subject subject;
-
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  private User user;
-
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Semester semester;
+  @ManyToOne(fetch = FetchType.EAGER)
+  private SubjectCard subjectCard;
 }

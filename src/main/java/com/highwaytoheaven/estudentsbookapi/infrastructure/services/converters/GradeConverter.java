@@ -17,23 +17,25 @@ public class GradeConverter {
     );
   }
 
-  public String convertValueToType(String s, GradeType type) {
+  public Double convertValueToType(String s, GradeType type) {
     Option<Converter> converter = this.converters.get(type);
+
     if (converter.isEmpty()) {
       throw new IllegalStateException("Not defined grade");
     }
+
     return converter.get().convert(s);
   }
 
   public interface Converter {
 
-    String convert(String s);
+    Double convert(String s);
   }
 
   public class LetterConverter implements Converter {
 
     @Override
-    public String convert(String s) {
+    public Double convert(String s) {
       return null;
     }
   }
@@ -41,7 +43,7 @@ public class GradeConverter {
   private class NumericConverter implements Converter {
 
     @Override
-    public String convert(String s) {
+    public Double convert(String s) {
       return null;
     }
   }
@@ -49,7 +51,7 @@ public class GradeConverter {
   private class PercentConverter implements Converter {
 
     @Override
-    public String convert(String s) {
+    public Double convert(String s) {
       return null;
     }
   }
