@@ -2,7 +2,6 @@ package com.highwaytoheaven.estudentsbookapi.application.controllers;
 
 import com.highwaytoheaven.api.StudentsQueryApi;
 import com.highwaytoheaven.estudentsbookapi.application.services.StudentsService;
-import com.highwaytoheaven.model.GradeDTO;
 import com.highwaytoheaven.model.GroupWithStudentsResponseDTO;
 import com.highwaytoheaven.model.StudentDTO;
 import com.highwaytoheaven.model.StudentSubjectCardResponseDTO;
@@ -18,10 +17,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StudentsQueryController implements StudentsQueryApi {
 
+    private final StudentsService studentsServiceImpl;
 
     @Override
     public ResponseEntity<List<GroupWithStudentsResponseDTO>> getListOfGroupsWithStudents() {
-        return null;
+        return ResponseEntity.ok().body(studentsServiceImpl.getListOfGroupsWithStudents());
     }
 
     @Override
