@@ -3,13 +3,13 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 import javax.persistence.*;
 
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.GradeType;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "grade_table")
 public class Grade extends BasicEntity {

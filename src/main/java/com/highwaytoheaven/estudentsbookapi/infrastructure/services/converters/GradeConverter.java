@@ -4,7 +4,9 @@ import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.GradeT
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GradeConverter {
 
   private final Map<GradeType, Converter> converters;

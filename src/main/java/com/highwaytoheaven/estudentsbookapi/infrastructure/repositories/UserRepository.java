@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 //    List<User> getAllActiveStudents();
 
     List<User> getAllById(UUID uuid);
+    Optional<User> getUserById(UUID uuid);
 }
