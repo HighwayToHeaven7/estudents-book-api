@@ -20,6 +20,5 @@ public interface StudentsService {
 
     Optional<GradeDTO> updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid, GradeUpdateRequestDTO gradeDTO);
 
-    //giveGradeToStudent(@Valid GradeCreateRequestDTO gradeCreateRequestDTO) //TODO remove
-//    Optional<GradeDTO> createNewGrade(); //TODO
+    GradeDTO createNewGrade(GradeCreateRequestDTO gradeCreateRequestDTO) throws Exception;
 }

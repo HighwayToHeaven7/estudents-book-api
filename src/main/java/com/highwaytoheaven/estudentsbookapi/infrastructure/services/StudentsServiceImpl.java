@@ -123,6 +123,34 @@ public class StudentsServiceImpl implements StudentsService {
         return Optional.of(gradeMapper.gradeToGradeDTO(grade));
     }
 
+    @Override
+    public GradeDTO createNewGrade(GradeCreateRequestDTO gradeCreateRequestDTO) throws Exception {
+
+        Optional<User> user = userRepository.getUserById(gradeCreateRequestDTO.getStudentUuid());
+
+        if(user.isEmpty())
+            throw new IllegalArgumentException();
+
+        Optional<Subject> subject = subjectRepository.getSubjectById(gradeCreateRequestDTO.getSubjectUuid());
+
+        if (subject.isEmpty())
+            throw new IllegalArgumentException();
+
+        Optional<SubjectCard> subjectCard = subjectCardRepository.getSubjectCardByUserAndSubject(user.get(), subject.get());
+
+        if(subjectCard.isEmpty())
+            throw new Exception();
+
+        Grade newGrade = Grade.builder().value(converter.convertValueToType(gradeCreateRequestDTO.getGrade(),
+                                                GradeType.valueOf(gradeCreateRequestDTO.getGradeType())).get())
+                                        .gradeType(GradeType.valueOf(gradeCreateRequestDTO.getGradeType()))
+                                        .weight(Double.valueOf(gradeCreateRequestDTO.getGradeWeight()))
+                                        .description(gradeCreateRequestDTO.getGradeDescription())
+                                        .subjectCard(subjectCard.get()).build();
+
+        return gradeMapper.gradeToGradeDTO(newGrade);
+    }
+
     private List<GroupWithStudentsResponseDTO> getAllSemestersWithStudentDTO(List<Semester> semestersWithGroupNames) {
         return semestersWithGroupNames.stream().map(semester ->
             studentMapper.semesterToGroupWithStudentsResponseDTO(
@@ -151,4 +179,6 @@ public class StudentsServiceImpl implements StudentsService {
         return  gradeRepository.getAllBySubjectCard(subjectCard).stream().map(gradeMapper::gradeToGradeDTO)
                 .collect(Collectors.toList());
     }
+
+
 }
