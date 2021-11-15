@@ -18,7 +18,7 @@ public interface StudentsService {
     List<StudentSubjectCardResponseDTO> getSubjectCardDetailsByStudentIdAndSubjectCardId(UUID studentUuid,
                                                                                          UUID subjectUuid);
 
-    Optional<GradeDTO> updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid, GradeUpdateRequestDTO gradeDTO);
+    GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid, GradeUpdateRequestDTO gradeDTO);
 
     GradeDTO createNewGrade(GradeCreateRequestDTO gradeCreateRequestDTO) throws Exception;
 }

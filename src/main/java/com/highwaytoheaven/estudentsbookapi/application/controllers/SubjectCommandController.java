@@ -13,11 +13,11 @@ public class SubjectCommandController implements SubjectCommandApi {
 
     @Override
     public ResponseEntity<SubjectDTO> createSubject(@Valid SubjectCreateRequestDTO subjectCreateRequestDTO) {
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
     @Override
     public ResponseEntity<SubjectDTO> updateSubjectById(UUID uuid, @Valid SubjectUpdateRequestDTO subjectUpdateRequestDTO) {
-        return null;
+        return ResponseEntity.notFound().build();
     }
 }

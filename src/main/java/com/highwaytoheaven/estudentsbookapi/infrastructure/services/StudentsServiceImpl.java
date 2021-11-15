@@ -97,7 +97,7 @@ public class StudentsServiceImpl implements StudentsService {
 
 
     @Override
-    public Optional<GradeDTO> updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid,
+    public GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid,
                                      GradeUpdateRequestDTO gradeDTO) {
 
         if (userRepository.findById(studentUuid).isEmpty())
@@ -120,7 +120,7 @@ public class StudentsServiceImpl implements StudentsService {
 
         gradeRepository.save(grade);
 
-        return Optional.of(gradeMapper.gradeToGradeDTO(grade));
+        return gradeMapper.gradeToGradeDTO(grade);
     }
 
     @Override
@@ -179,6 +179,4 @@ public class StudentsServiceImpl implements StudentsService {
         return  gradeRepository.getAllBySubjectCard(subjectCard).stream().map(gradeMapper::gradeToGradeDTO)
                 .collect(Collectors.toList());
     }
-
-
 }
