@@ -31,12 +31,33 @@ public class StudentsQueryController implements StudentsQueryApi {
     @Override
     public ResponseEntity<List<StudentSubjectCardResponseDTO>> getStudentCardByStudentIdAndSemester(UUID uuid,
                                                                @Valid Optional<Integer> optional) {
-        return null;
+        try {
+            return ResponseEntity.ok().body(studentsServiceImpl.getStudentCardByStudentIdAndSemester(uuid, optional));
+        }catch (IllegalArgumentException ie){
+            ie.printStackTrace();
+            // TODO -> response in spec 406
+            return ResponseEntity.status(406).build();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            // TODO -> response in spec 500
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @Override
     public ResponseEntity<List<StudentSubjectCardResponseDTO>> getSubjectCardDetailsByStudentIdAndSubjectCardId(
                                                                 UUID uuid, UUID uuid1) {
-        return null;
+        try {
+            return ResponseEntity.ok().body(studentsServiceImpl.getSubjectCardDetailsByStudentIdAndSubjectCardId(uuid, uuid1));
+        }catch (IllegalArgumentException ie){
+            ie.printStackTrace();
+            // TODO -> response in spec 406
+            return ResponseEntity.status(406).build();
+        }catch (Exception e){
+            // TODO -> response in spec 500
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 }
