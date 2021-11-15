@@ -35,12 +35,10 @@ public class StudentsQueryController implements StudentsQueryApi {
             return ResponseEntity.ok().body(studentsServiceImpl.getStudentCardByStudentIdAndSemester(uuid, optional));
         }catch (IllegalArgumentException ie){
             ie.printStackTrace();
-            // TODO -> response in spec 406
-            return ResponseEntity.status(406).build();
+            return ResponseEntity.notFound().build();
         }
         catch (Exception e) {
             e.printStackTrace();
-            // TODO -> response in spec 500
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -52,10 +50,9 @@ public class StudentsQueryController implements StudentsQueryApi {
             return ResponseEntity.ok().body(studentsServiceImpl.getSubjectCardDetailsByStudentIdAndSubjectCardId(uuid, uuid1));
         }catch (IllegalArgumentException ie){
             ie.printStackTrace();
-            // TODO -> response in spec 406
-            return ResponseEntity.status(406).build();
+            return ResponseEntity.notFound().build();
         }catch (Exception e){
-            // TODO -> response in spec 500
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
 
