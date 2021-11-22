@@ -9,11 +9,13 @@ import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.UserRepo
 import com.highwaytoheaven.model.ProfessorDTO;
 import lombok.AllArgsConstructor;
 import net.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
+@Service
 public class ProfessorsServiceImpl implements ProfessorsService {
 
     private final UserRepository userRepository;

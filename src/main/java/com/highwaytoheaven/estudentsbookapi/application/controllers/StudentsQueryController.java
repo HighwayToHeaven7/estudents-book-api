@@ -7,6 +7,7 @@ import com.highwaytoheaven.model.StudentDTO;
 import com.highwaytoheaven.model.StudentSubjectCardResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
+@RestController
 public class StudentsQueryController implements StudentsQueryApi {
 
     private final StudentsService studentsServiceImpl;

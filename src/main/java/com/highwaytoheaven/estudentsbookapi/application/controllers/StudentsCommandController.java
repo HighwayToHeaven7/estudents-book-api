@@ -7,11 +7,13 @@ import com.highwaytoheaven.model.GradeDTO;
 import com.highwaytoheaven.model.GradeUpdateRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @AllArgsConstructor
+@RestController
 public class StudentsCommandController implements StudentsCommandApi {
 
     private final StudentsService studentsService;
