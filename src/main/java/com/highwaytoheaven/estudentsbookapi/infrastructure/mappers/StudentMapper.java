@@ -27,4 +27,12 @@ public interface StudentMapper {
             @Mapping(target = "subjectCards", source = "subjectCards")
     })
     StudentDTO userToStudentDTO(User user, UserDTO userDTO, List<StudentSubjectCardResponseDTO> subjectCards);
+
+
+    @Mappings({
+            @Mapping(target = "id", source = "user.id"),
+            @Mapping(target = "name", source = "user.name"),
+            @Mapping(target = "surname", source = "user.surname")
+    })
+    Student1DTO userToStudent1DTO(User user);
 }
