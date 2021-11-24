@@ -147,6 +147,7 @@ public class StudentsServiceImpl implements StudentsService {
                                         .weight(Double.valueOf(gradeCreateRequestDTO.getGradeWeight()))
                                         .description(gradeCreateRequestDTO.getGradeDescription())
                                         .subjectCard(subjectCard.get()).build();
+        gradeRepository.save(newGrade);
 
         return gradeMapper.gradeToGradeDTO(newGrade);
     }
