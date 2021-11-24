@@ -31,10 +31,9 @@ public class StudentsQueryController implements StudentsQueryApi {
     }
 
     @Override
-    public ResponseEntity<List<StudentSubjectCardResponseDTO>> getStudentCardByStudentIdAndSemester(UUID uuid,
-                                                               @Valid Optional<Integer> optional) {
+    public ResponseEntity<List<StudentSubjectCardResponseDTO>> getStudentCardByStudentIdAndSemester(UUID uuid, Integer semesterNumber) {
         try {
-            return ResponseEntity.ok().body(studentsServiceImpl.getStudentCardByStudentIdAndSemester(uuid, optional));
+            return ResponseEntity.ok().body(studentsServiceImpl.getStudentCardByStudentIdAndSemester(uuid, semesterNumber));
         }catch (IllegalArgumentException ie){
             ie.printStackTrace();
             return ResponseEntity.notFound().build();

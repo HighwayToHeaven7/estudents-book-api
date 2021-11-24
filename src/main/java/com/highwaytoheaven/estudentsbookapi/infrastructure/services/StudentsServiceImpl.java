@@ -51,18 +51,15 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     public List<StudentSubjectCardResponseDTO> getStudentCardByStudentIdAndSemester(UUID studentUuid,
-                                                    Optional<Integer> semesterNumber) throws Exception {
+                                                    Integer semesterNumber) throws Exception {
 
         Optional<User> student = userRepository.getUserById(studentUuid);
 
         if (student.isEmpty())
             throw new Exception("There's no user with this id!");
 
-        if (semesterNumber.isEmpty())
-            throw new IllegalArgumentException("Wrong semester number!");
-
         Optional<Semester> semester = semesterRepository.getSemesterBySemesterNumberAndUsersListContaining(
-                                                            semesterNumber.get(), student.get());
+                                                            semesterNumber, student.get());
 
         if (semester.isEmpty())
             throw new Exception("Semester not exists!");

@@ -13,7 +13,7 @@ public interface StudentsService {
     List<StudentDTO> getStudentById(UUID studentUuid);
 
     List<StudentSubjectCardResponseDTO> getStudentCardByStudentIdAndSemester(UUID studentUuid,
-                                            Optional<Integer> semesterNumber) throws Exception;
+                                            Integer semesterNumber) throws Exception;
 
     List<StudentSubjectCardResponseDTO> getSubjectCardDetailsByStudentIdAndSubjectCardId(UUID studentUuid,
                                                                                          UUID subjectUuid);
