@@ -11,5 +11,4 @@ public interface SubjectService {
 
     SubjectDTO createSubject(@Valid SubjectCreateRequestDTO subjectCreateRequestDTO);
     SubjectDTO updateSubjectById(UUID uuid, @Valid SubjectUpdateRequestDTO subjectUpdateRequestDTO);
-    
 }

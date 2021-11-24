@@ -1,11 +1,7 @@
 package com.highwaytoheaven.estudentsbookapi.application.services;
 
-import com.highwaytoheaven.model.GradeDTO;
-import com.highwaytoheaven.model.GradeUpdateRequestDTO;
-import com.highwaytoheaven.model.GroupWithStudentsResponseDTO;
-import com.highwaytoheaven.model.StudentDTO;
+import com.highwaytoheaven.model.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,7 +9,16 @@ import java.util.UUID;
 public interface StudentsService {
 
     List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents();
-    List<StudentDTO> getStudentById(UUID uuid);
-    List<GradeDTO> getStudentGradesByStudentId(UUID uuid, @Valid Optional<Integer> optional);
-    GradeDTO giveStudentGrade(UUID uuid, UUID uuid1, @Valid GradeUpdateRequestDTO gradeUpdateRequestDTO);
+
+    List<StudentDTO> getStudentById(UUID studentUuid);
+
+    List<StudentSubjectCardResponseDTO> getStudentCardByStudentIdAndSemester(UUID studentUuid,
+                                            Integer semesterNumber) throws Exception;
+
+    List<StudentSubjectCardResponseDTO> getSubjectCardDetailsByStudentIdAndSubjectCardId(UUID studentUuid,
+                                                                                         UUID subjectUuid);
+
+    GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid, GradeUpdateRequestDTO gradeDTO);
+
+    GradeDTO createNewGrade(GradeCreateRequestDTO gradeCreateRequestDTO) throws Exception;
 }
