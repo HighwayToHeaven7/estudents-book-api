@@ -16,12 +16,6 @@ import org.hibernate.annotations.Type;
 @Setter
 public class BasicEntity implements Serializable {
 
-//  @Id
-//  @GeneratedValue(generator = "UUID")
-//  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//  @Column(name = "id", updatable = false, nullable = false)
-//  private UUID id;
-
   @Id
   @GeneratedValue(generator = "uuid4")
   @GenericGenerator(name = "UUID", strategy = "uuid4")

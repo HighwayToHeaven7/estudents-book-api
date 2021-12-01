@@ -34,8 +34,8 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     public List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents() {
-       List<Semester> semestersWithGroupNames = semesterRepository.getAllBySemesterDate(
-                                                    new Date(System.currentTimeMillis()));
+       List<Semester> semestersWithGroupNames = semesterRepository.getAllBySemesterDate(new Date(System.
+                                                                                                currentTimeMillis()));
 
         return getAllSemestersWithStudentDTO(semestersWithGroupNames);
     }
