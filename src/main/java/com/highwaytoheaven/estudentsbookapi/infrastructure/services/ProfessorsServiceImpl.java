@@ -2,7 +2,6 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.services;
 
 import com.highwaytoheaven.estudentsbookapi.application.services.ProfessorsService;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.Subject;
-import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.SubjectCard;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.User;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.mappers.*;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.SubjectCardRepository;
@@ -55,7 +54,6 @@ public class ProfessorsServiceImpl implements ProfessorsService {
 
     private List<SubjectResponseDTO> getListOfSubjectsWithStudents(User professor) {
         List<Subject> subjects = subjectRepository.getAllByUser(professor);
-        System.out.println(subjects);
 
         return subjects.stream().map(subject -> {
             return subjectMapper.subjectToSubjectResponseDTO(subject,

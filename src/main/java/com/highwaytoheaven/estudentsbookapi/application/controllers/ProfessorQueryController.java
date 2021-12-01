@@ -1,6 +1,6 @@
 package com.highwaytoheaven.estudentsbookapi.application.controllers;
 
-import com.highwaytoheaven.api.ProfessorQueryApi;
+import com.highwaytoheaven.api.ProfessorsQueryApi;
 import com.highwaytoheaven.estudentsbookapi.application.services.ProfessorsService;
 import com.highwaytoheaven.model.ProfessorDTO;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-public class ProfessorQueryController implements ProfessorQueryApi {
+public class ProfessorQueryController implements ProfessorsQueryApi {
 
     private final ProfessorsService professorsService;
 

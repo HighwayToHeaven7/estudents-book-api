@@ -13,10 +13,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("select u from User u where u.accountStatus = 'NEW'")
     List<User> getUsersByAccountStatusIsNew();
 
-    //TODO -> add major as parameter : ?
-//    @Query("SELECT u FROM User u WHERE u.accountStatus = 'ACTIVE' AND u.role = 'STUDENT'")
-//    List<User> getAllActiveStudents();
-
     List<User> getAllById(UUID uuid);
     Optional<User> getUserById(UUID uuid);
 }
