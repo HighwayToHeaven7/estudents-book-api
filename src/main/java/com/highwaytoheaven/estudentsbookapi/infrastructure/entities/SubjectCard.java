@@ -31,7 +31,4 @@ public class SubjectCard extends BasicEntity{
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Semester semester;
-
-//    @OneToMany(fetch = FetchType.LAZY)
-//    List<Grade> gradeList;
 }
