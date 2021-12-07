@@ -28,4 +28,6 @@ public class UserServiceImpl implements UserService {
                 contactDetailsMapper.contactDetailsToUserContactDto(x.getContactDetails())))
                 .collect(Collectors.toList());
     }
+
+
 }
