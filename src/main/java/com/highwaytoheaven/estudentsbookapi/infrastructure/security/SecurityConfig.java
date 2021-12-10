@@ -1,5 +1,7 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.security;
 
+import com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTAuthenticationFilter;
+import com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/users/authenticate").permitAll()
                     .antMatchers(HttpMethod.GET,"/users/new").hasAuthority("ADMIN")
+                    .antMatchers(HttpMethod.GET,"/users").hasAuthority("ADMIN")
                     .antMatchers(HttpMethod.GET,"/professors/**").hasAuthority("PROFESSOR")
                     .antMatchers(HttpMethod.GET,"/students/groups").hasAuthority("PROFESSOR")
                     .antMatchers(HttpMethod.GET,"/students/{student-uuid}").hasAuthority("STUDENT")
