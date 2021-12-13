@@ -3,10 +3,6 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
-import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.User;
-import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,15 +17,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
     private final String ROLE = "role";
-
-    @Value("${jwt.secret}")
-    private final String SECRET_KEY = "secret_key";
+    private final String SECRET_KEY = "f-103F15%!f4h8A;s";
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -48,7 +41,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             Optional<UsernamePasswordAuthenticationToken> authentication = getAuthentication(request);
 
             if (authentication.isEmpty())
-                throw new IOException(); //TODO
+                throw new IOException();
 
             SecurityContextHolder.getContext().setAuthentication(authentication.get());
             chain.doFilter(request, response);

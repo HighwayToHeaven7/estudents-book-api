@@ -3,6 +3,7 @@ package com.highwaytoheaven.estudentsbookapi.application.controllers;
 import com.highwaytoheaven.api.UserCommandApi;
 import com.highwaytoheaven.estudentsbookapi.application.services.UserService;
 import com.highwaytoheaven.model.UserAuthPostRequestDTO;
+import com.highwaytoheaven.model.UserAuthPostResponseDTO;
 import com.highwaytoheaven.model.UserCreateRequestDTO;
 import com.highwaytoheaven.model.UserDTO;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class UserCommandController implements UserCommandApi {
     }
 
     @Override
-    public ResponseEntity<Object> getNewToken(@Valid UserAuthPostRequestDTO userAuthPostRequestDTO) {
-        return ResponseEntity.ok().body("");
+    public ResponseEntity<UserAuthPostResponseDTO> getNewToken(@Valid UserAuthPostRequestDTO userAuthPostRequestDTO) {
+        return ResponseEntity.ok().build();
     }
 }

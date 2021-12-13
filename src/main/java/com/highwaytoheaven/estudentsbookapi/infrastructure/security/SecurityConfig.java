@@ -2,6 +2,7 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.security;
 
 import com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTAuthenticationFilter;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTAuthorizationFilter;
+import com.highwaytoheaven.estudentsbookapi.infrastructure.services.AuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+    private final AuthenticationService authService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -52,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasAuthority("PROFESSOR")
                     .anyRequest().authenticated()
                 .and()
-                    .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                    .addFilter(new JWTAuthenticationFilter(authenticationManager(), authService))
                     .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

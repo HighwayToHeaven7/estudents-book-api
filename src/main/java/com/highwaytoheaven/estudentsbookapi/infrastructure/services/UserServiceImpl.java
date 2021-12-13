@@ -55,5 +55,4 @@ public class UserServiceImpl implements UserService {
         return userMapper.userEntityToUserDto(user, contactDetailsMapper.contactDetailsToUserContactDto(contactDetails));
     }
 
-
 }

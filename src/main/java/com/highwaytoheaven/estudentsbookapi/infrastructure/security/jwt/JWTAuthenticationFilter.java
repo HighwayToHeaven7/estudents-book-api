@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.User;
+import com.highwaytoheaven.estudentsbookapi.infrastructure.services.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,18 +18,19 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 
-
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final String URL = "/users/authenticate";
-    private final String SECRET_KEY = "secret_key";
+    private final String SECRET_KEY = "f-103F15%!f4h8A;s";
     private final int TIME = 900_000;
     private final String ROLE = "role";
 
     private final AuthenticationManager authenticationManager;
+    private final AuthenticationService authService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationService authService) {
         this.authenticationManager = authenticationManager;
+        this.authService = authService;
         super.setFilterProcessesUrl(URL);
     }
 
@@ -39,8 +41,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),
-                                                        user.getPassword(), new ArrayList<>()));
+            return  authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(user.getEmail(),
+                                                        user.getPassword(),
+                                                        new ArrayList<>()));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -56,7 +59,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .withExpiresAt(new Date(System.currentTimeMillis() + TIME))
                         .sign(Algorithm.HMAC512(SECRET_KEY.getBytes()));
 
-        response.getWriter().write(token);
+        String email = ((User) authResult.getPrincipal()).getUsername();
+
+        String userDtoAsString = authService.createAuthDtoAndConvertToJson(email, token);
+
+        response.setContentType("application/json");
+        response.getWriter().write(userDtoAsString);
         response.getWriter().flush();
     }
 }
