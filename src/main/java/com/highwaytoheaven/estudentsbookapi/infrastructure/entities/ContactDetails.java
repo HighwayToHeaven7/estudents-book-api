@@ -14,9 +14,6 @@ import lombok.*;
 @Table(name = "contact_details_table")
 public class ContactDetails extends BasicEntity {
 
-  @Column(nullable = false, unique = true)
-  private String email;
-
   @Column(length = 12, name = "phone_number")
   private String phoneNumber;
 }

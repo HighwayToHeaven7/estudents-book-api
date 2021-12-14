@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 public interface ContactDetailsMapper {
 
     @Mappings({
-            @Mapping(target = "email", source = "contactDetails.email"),
+//            @Mapping(target = "email", source = "contactDetails.email"),
             @Mapping(target = "phoneNumber", source = "contactDetails.phoneNumber")
     })
     UserContactDTO contactDetailsToUserContactDto(ContactDetails contactDetails);

@@ -26,8 +26,8 @@ public class GradeConverter {
             "bardzo dobry", 0.85,
             "+dobry", 0.78,
             "dobry", 0.70,
-            "+dostateczy", 0.61,
-            "dostateczy", 0.50,
+            "+dostateczny", 0.61,
+            "dostateczny", 0.50,
             "dopuszczający", 0.35,
             "niedostateczny", 0.0
     );
