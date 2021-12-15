@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Service
@@ -35,19 +34,20 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     public List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents() {
-       List<Semester> semestersWithGroupNames = semesterRepository
-               .getAllBySemesterDate(new Date(System.currentTimeMillis()));
+        List<Semester> semestersWithGroupNames = semesterRepository
+                .getAllBySemesterDate(new Date(System.currentTimeMillis()));
 
         return getGroupWithStudentsResponseDTOs(semestersWithGroupNames);
     }
 
     @Override
-    public List<StudentDTO> getStudentById(UUID studentUuid) {
-        return userRepository.getAllById(studentUuid).stream().map(user -> studentMapper.userToStudentDTO(
-                user, userMapper.userEntityToUserDto(user,
-                        contactDetailsMapper.contactDetailsToUserContactDto(user.getContactDetails())),
-                getStudentSubjectCardResponseDTOs(user)
-                )).collect(Collectors.toList());
+    public StudentDTO getStudentById(UUID studentUuid) {
+        return userRepository.findById(studentUuid)
+                .map(user -> studentMapper.userToStudentDTO(
+                        user, userMapper.userEntityToUserDto(user,
+                                contactDetailsMapper.contactDetailsToUserContactDto(user.getContactDetails())),
+                        getStudentSubjectCardResponseDTOs(user)
+                )).orElseThrow();
     }
 
     @Override
@@ -67,9 +67,9 @@ public class StudentsServiceImpl implements StudentsService {
 
         List<SubjectCard> subjectCards = subjectCardRepository.getAllByUserAndSemester(student.get(), semester.get());
 
-        return  subjectCards.stream().map(subjectCard -> subjectCardMapper.subjectCardToStudentSubjectCardResponseDTO(
-                    subjectCard, this.getGradeDTOs(subjectCard)
-                )).collect(Collectors.toList());
+        return subjectCards.stream().map(subjectCard -> subjectCardMapper.subjectCardToStudentSubjectCardResponseDTO(
+                subjectCard, this.getGradeDTOs(subjectCard)
+        )).collect(Collectors.toList());
     }
 
     @Override
@@ -87,14 +87,14 @@ public class StudentsServiceImpl implements StudentsService {
         List<SubjectCard> subjectCards = subjectCardRepository.getAllByUserAndSubject(student.get(), subject.get());
 
         return subjectCards.stream().map(subjectCard -> subjectCardMapper
-                    .subjectCardToStudentSubjectCardResponseDTO(subjectCard, this.getGradeDTOs(subjectCard)))
+                        .subjectCardToStudentSubjectCardResponseDTO(subjectCard, this.getGradeDTOs(subjectCard)))
                 .collect(Collectors.toList());
     }
 
 
     @Override
     public GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid,
-                                     GradeUpdateRequestDTO gradeDTO) {
+                                       GradeUpdateRequestDTO gradeDTO) {
 
         if (userRepository.findById(studentUuid).isEmpty())
             throw new IllegalArgumentException("Student with this id does not exist!");
@@ -104,7 +104,7 @@ public class StudentsServiceImpl implements StudentsService {
 
         Optional<Grade> gradeOptional = gradeRepository.findById(gradeUuid);
 
-        if(gradeOptional.isEmpty())
+        if (gradeOptional.isEmpty())
             throw new IllegalArgumentException("Grade with this id does not exist!");
 
         Grade grade = gradeOptional.get();
@@ -126,7 +126,7 @@ public class StudentsServiceImpl implements StudentsService {
 
         Optional<User> user = userRepository.getUserById(gradeCreateRequestDTO.getStudentUuid());
 
-        if(user.isEmpty())
+        if (user.isEmpty())
             throw new IllegalArgumentException();
 
         Optional<Subject> subject = subjectRepository.getSubjectById(gradeCreateRequestDTO.getSubjectUuid());
@@ -135,17 +135,17 @@ public class StudentsServiceImpl implements StudentsService {
             throw new IllegalArgumentException();
 
         Optional<SubjectCard> subjectCard = subjectCardRepository.getSubjectCardByUserAndSubject(user.get(),
-                    subject.get());
+                subject.get());
 
-        if(subjectCard.isEmpty())
+        if (subjectCard.isEmpty())
             throw new Exception();
 
         Grade newGrade = Grade.builder().value(converter.convertValueToType(gradeCreateRequestDTO.getGrade(),
-                                                GradeType.valueOf(gradeCreateRequestDTO.getGradeType())).get())
-                                        .gradeType(GradeType.valueOf(gradeCreateRequestDTO.getGradeType()))
-                                        .weight(Double.valueOf(gradeCreateRequestDTO.getGradeWeight()))
-                                        .description(gradeCreateRequestDTO.getGradeDescription())
-                                        .subjectCard(subjectCard.get()).build();
+                        GradeType.valueOf(gradeCreateRequestDTO.getGradeType())).get())
+                .gradeType(GradeType.valueOf(gradeCreateRequestDTO.getGradeType()))
+                .weight(Double.valueOf(gradeCreateRequestDTO.getGradeWeight()))
+                .description(gradeCreateRequestDTO.getGradeDescription())
+                .subjectCard(subjectCard.get()).build();
 
         gradeRepository.save(newGrade);
 
@@ -160,24 +160,24 @@ public class StudentsServiceImpl implements StudentsService {
 
     private List<StudentDTO> getListOfStudentDTOByNewSemester(Semester semester) {
         return semester.getUsersList().stream().map(user -> {
-                UserContactDTO contactDTO = contactDetailsMapper
-                        .contactDetailsToUserContactDto(user.getContactDetails());
+            UserContactDTO contactDTO = contactDetailsMapper
+                    .contactDetailsToUserContactDto(user.getContactDetails());
 
-                return studentMapper.userToStudentDTO(user,
-                        userMapper.userEntityToUserDto(user, contactDTO),
-                        this.getStudentSubjectCardResponseDTOs(user));
-            }).collect(Collectors.toList());
+            return studentMapper.userToStudentDTO(user,
+                    userMapper.userEntityToUserDto(user, contactDTO),
+                    this.getStudentSubjectCardResponseDTOs(user));
+        }).collect(Collectors.toList());
     }
 
     private List<StudentSubjectCardResponseDTO> getStudentSubjectCardResponseDTOs(User student) {
         return subjectCardRepository.getAllByUser(student).stream().map(subjectCard ->
-                    subjectCardMapper.subjectCardToStudentSubjectCardResponseDTO(subjectCard,
-                            this.getGradeDTOs(subjectCard))
-                ).collect(Collectors.toList());
+                subjectCardMapper.subjectCardToStudentSubjectCardResponseDTO(subjectCard,
+                        this.getGradeDTOs(subjectCard))
+        ).collect(Collectors.toList());
     }
 
     private List<GradeDTO> getGradeDTOs(SubjectCard subjectCard) {
-        return  gradeRepository.getAllBySubjectCard(subjectCard).stream()
+        return gradeRepository.getAllBySubjectCard(subjectCard).stream()
                 .map(gradeMapper::gradeToGradeDTO).collect(Collectors.toList());
     }
 
