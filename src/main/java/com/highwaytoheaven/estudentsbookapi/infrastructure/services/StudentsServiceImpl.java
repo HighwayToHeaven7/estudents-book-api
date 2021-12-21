@@ -118,7 +118,7 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
 
     @Override
     public GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid,
-                                       GradeUpdateRequestDTO gradeDTO)
+                                       GradeUpdateRequestDTO gradeDTO) throws Exception
     {
 
         if (userRepository.findById(studentUuid).isEmpty())
@@ -134,9 +134,18 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
 
         Grade grade = gradeOptional.get();
 
-        grade.setValue(converter.convertValueToType(gradeDTO.getGrade(),
-                GradeType.valueOf(gradeDTO.getGradeType())).get());
+        Optional<Double> value = Optional.empty();
 
+        try{
+            value = converter.convertValueToType(gradeDTO.getGrade(), GradeType.valueOf(gradeDTO.getGradeType()));
+        }catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
+
+        if (value.isEmpty())
+            throw new Exception("Empty converted grade value!");
+
+        grade.setValue(value.get());
         grade.setGradeType(GradeType.valueOf(gradeDTO.getGradeType()));
         grade.setWeight(Double.valueOf(gradeDTO.getGradeWeight()));
         grade.setDescription(gradeDTO.getGradeDescription());
@@ -150,23 +159,30 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
     public GradeDTO createNewGrade(GradeCreateRequestDTO gradeCreateRequestDTO) throws Exception {
 
         Optional<User> user = userRepository.getUserById(gradeCreateRequestDTO.getStudentUuid());
-
-        if (user.isEmpty())
-            throw new IllegalArgumentException();
-
         Optional<Subject> subject = subjectRepository.getSubjectById(gradeCreateRequestDTO.getSubjectUuid());
 
-        if (subject.isEmpty())
+        if (user.isEmpty() || subject.isEmpty())
             throw new IllegalArgumentException();
 
-        Optional<SubjectCard> subjectCard = subjectCardRepository.getSubjectCardByUserAndSubject(user.get(),
-                subject.get());
+        Optional<SubjectCard> subjectCard = subjectCardRepository.getSubjectCardByUserAndSubject(user.get(), subject.get());
 
         if (subjectCard.isEmpty())
-            throw new Exception();
+            throw new Exception("Empty subject card!");
 
-        Grade newGrade = Grade.builder().value(converter.convertValueToType(gradeCreateRequestDTO.getGrade(),
-                        GradeType.valueOf(gradeCreateRequestDTO.getGradeType())).get())
+        Optional<Double> value = Optional.empty();
+
+        try{
+            value = converter.convertValueToType(gradeCreateRequestDTO.getGrade(),
+                    GradeType.valueOf(gradeCreateRequestDTO.getGradeType()));
+
+        }catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
+
+        if (value.isEmpty())
+            throw new Exception("Empty converted grade value!");
+
+        Grade newGrade = Grade.builder().value(value.get())
                 .gradeType(GradeType.valueOf(gradeCreateRequestDTO.getGradeType()))
                 .weight(Double.valueOf(gradeCreateRequestDTO.getGradeWeight()))
                 .description(gradeCreateRequestDTO.getGradeDescription())

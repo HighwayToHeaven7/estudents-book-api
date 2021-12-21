@@ -1,116 +1,118 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.services.converters;
 
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.GradeType;
-import io.vavr.collection.HashMap;
-import io.vavr.collection.Map;
-import io.vavr.control.Option;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class GradeConverter {
 
   private final Map<GradeType, Converter> converters;
-
   {
-    converters = HashMap.of(
-        GradeType.LETTER, new LetterConverter(),
-        GradeType.NUMERIC, new NumericConverter(),
-        GradeType.PERCENTAGE, new PercentConverter()
-    );
-  }
+    converters = new HashMap<>();
 
-//  private final java.util.Map<String, Double> lettersMap = new java.util.HashMap<String, Double>() {{
-//    put("celujący", 1.0);
-//    put("-celujący", 0.96);
-//    put("+bardzo dobry", 0.95);
-//    put("bardzo dobry", 0.90);
-//    put("-bardzo dobry", 1.0);
-//    put("-celujący", 1.0);
-//    put("-celujący", 1.0);
-//    put("-celujący", 1.0);
-//  }};
+    converters.put(GradeType.LETTER, new LetterConverter());
+    converters.put(GradeType.NUMERIC, new NumericConverter());
+    converters.put(GradeType.PERCENTAGE, new PercentConverter());
+  }
 
   private final Map<String, Double> lettersMap;
   {
-    lettersMap = HashMap.of(
-            "celujący", 1.0,
-            "+bardzo dobry", 0.90,
-            "bardzo dobry", 0.85,
-            "+dobry", 0.78,
-            "dobry", 0.70,
-            "+dostateczny", 0.61,
-            "dostateczny", 0.50,
-            "dopuszczający", 0.35,
-            "niedostateczny", 0.0
-    );
+    lettersMap = new HashMap<>();
+
+    lettersMap.put("celujący", 1.0);
+    lettersMap.put("-celujący", 0.95);
+    lettersMap.put("+bardzo dobry", 0.90);
+    lettersMap.put("bardzo dobry", 0.85);
+    lettersMap.put("-bardzo dobry", 0.80);
+    lettersMap.put("+dobry", 0.75);
+    lettersMap.put("dobry", 0.70);
+    lettersMap.put("-dobry", 0.65);
+    lettersMap.put("+dostateczny", 0.60);
+    lettersMap.put("dostateczny", 0.55);
+    lettersMap.put("-dostateczny", 0.50);
+    lettersMap.put("+dopuszczający", 0.45);
+    lettersMap.put("dopuszczający", 0.40);
+    lettersMap.put("-dopuszczający", 0.35);
+    lettersMap.put("+niedostateczny", 0.30);
+    lettersMap.put("niedostateczny", 0.0);
   }
 
   private final Map<String, Double> numericsMap;
   {
-    numericsMap = HashMap.of(
-            "6", 1.0,
-            "+5", 0.90,
-            "5", 0.85,
-            "+4", 0.78,
-            "4", 0.70,
-            "+3", 0.61,
-            "3", 0.50,
-            "2", 0.35,
-            "1", 0.0
-    );
+    numericsMap = new HashMap<>();
+
+    numericsMap.put("6", 1.0);
+    numericsMap.put("-6", 0.95);
+    numericsMap.put("+5", 0.90);
+    numericsMap.put("5", 0.85);
+    numericsMap.put("-5", 0.80);
+    numericsMap.put("+4", 0.75);
+    numericsMap.put("4", 0.70);
+    numericsMap.put("-4", 0.65);
+    numericsMap.put("+3", 0.60);
+    numericsMap.put("3", 0.55);
+    numericsMap.put("-3", 0.50);
+    numericsMap.put("+2", 0.45);
+    numericsMap.put("2", 0.40);
+    numericsMap.put("-2", 0.35);
+    numericsMap.put("+1", 0.30);
+    numericsMap.put("1", 0.0);
   }
 
-  public Option<Double> convertValueToType(String s, GradeType type) {
-    Option<Converter> converter = this.converters.get(type);
+  public Optional<Double> convertValueToType(String s, GradeType type) throws IllegalArgumentException{
+    Optional<Double> convertedValue = Optional.empty();
 
-    if (converter.isEmpty()) {
-      throw new IllegalStateException("Not defined grade");
-    }
-    return converter.get().convert(s);
+    if (!this.converters.containsKey(type))
+      throw new IllegalArgumentException("Not defined grade type");
+
+    Converter converter = this.converters.get(type);
+
+    convertedValue = converter.convert(s);
+
+    return convertedValue;
   }
 
   public interface Converter {
-    Option<Double> convert(String s);
+    Optional<Double> convert(String s) throws IllegalArgumentException;
   }
 
   public class LetterConverter implements Converter {
 
     @Override
-    public Option<Double> convert(String s) {
+    public Optional<Double> convert(String s) throws IllegalArgumentException{
+      if(!lettersMap.containsKey(s))
+        throw new IllegalArgumentException("Not defined grade");
 
-      Option<Double> value = null;
-      if(lettersMap.containsKey(s)){
-        value = lettersMap.get(s);
-      }
-
-      return value;
+      return Optional.of(lettersMap.get(s));
     }
   }
 
   private class NumericConverter implements Converter {
 
     @Override
-    public Option<Double> convert(String s) {
+    public Optional<Double> convert(String s) throws IllegalArgumentException{
+      if(!numericsMap.containsKey(s))
+        throw new IllegalArgumentException("Not defined grade");
 
-      Option<Double> value = null;
-      if(numericsMap.containsKey(s)){
-        value = numericsMap.get(s);
-      }
-
-      return value;
+      return Optional.of(numericsMap.get(s));
     }
   }
 
   private class PercentConverter implements Converter {
 
     @Override
-    public Option<Double> convert(String s) { // eg. s == 70%
+    public Optional<Double> convert(String s) {
 
       String str = s.split("%")[0];
+
       double value = Double.parseDouble(str);
       value /= 100.0;
 
-      return Option.of(value);
+      return Optional.of(value);
     }
   }
 }
