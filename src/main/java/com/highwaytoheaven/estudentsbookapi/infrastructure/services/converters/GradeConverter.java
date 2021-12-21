@@ -18,6 +18,18 @@ public class GradeConverter {
         GradeType.PERCENTAGE, new PercentConverter()
     );
   }
+
+//  private final java.util.Map<String, Double> lettersMap = new java.util.HashMap<String, Double>() {{
+//    put("celujący", 1.0);
+//    put("-celujący", 0.96);
+//    put("+bardzo dobry", 0.95);
+//    put("bardzo dobry", 0.90);
+//    put("-bardzo dobry", 1.0);
+//    put("-celujący", 1.0);
+//    put("-celujący", 1.0);
+//    put("-celujący", 1.0);
+//  }};
+
   private final Map<String, Double> lettersMap;
   {
     lettersMap = HashMap.of(

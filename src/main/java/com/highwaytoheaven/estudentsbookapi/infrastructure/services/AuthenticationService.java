@@ -18,6 +18,7 @@ public class AuthenticationService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
     public String createAuthDtoAndConvertToJson(String email, String token) throws IOException {
 
         Optional<User> userOptional = userRepository.findUserByEmail(email);

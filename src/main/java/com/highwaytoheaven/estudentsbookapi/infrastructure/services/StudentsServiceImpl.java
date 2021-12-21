@@ -7,7 +7,6 @@ import com.highwaytoheaven.estudentsbookapi.infrastructure.mappers.*;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.*;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.services.converters.GradeConverter;
 import com.highwaytoheaven.model.*;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -16,9 +15,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
+
 @Service
-public class StudentsServiceImpl implements StudentsService {
+public class StudentsServiceImpl extends BasicUsersService implements StudentsService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -32,6 +31,27 @@ public class StudentsServiceImpl implements StudentsService {
     private final GradeMapper gradeMapper;
     private final GradeConverter converter;
 
+    public StudentsServiceImpl(UserRepository userRepository, UserMapper userMapper, StudentMapper studentMapper,
+                               ContactDetailsMapper contactDetailsMapper, SemesterRepository semesterRepository,
+                               SubjectCardRepository subjectCardRepository, SubjectRepository subjectRepository,
+                               SubjectCardMapper subjectCardMapper, GradeRepository gradeRepository,
+                               GradeMapper gradeMapper, GradeConverter converter)
+    {
+        super(userRepository);
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.studentMapper = studentMapper;
+        this.contactDetailsMapper = contactDetailsMapper;
+        this.semesterRepository = semesterRepository;
+        this.subjectCardRepository = subjectCardRepository;
+        this.subjectRepository = subjectRepository;
+        this.subjectCardMapper = subjectCardMapper;
+        this.gradeRepository = gradeRepository;
+        this.gradeMapper = gradeMapper;
+        this.converter = converter;
+    }
+
+
     @Override
     public List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents() {
         List<Semester> semestersWithGroupNames = semesterRepository
@@ -41,7 +61,9 @@ public class StudentsServiceImpl implements StudentsService {
     }
 
     @Override
-    public StudentDTO getStudentById(UUID studentUuid) {
+    public StudentDTO getStudentById() {
+        UUID studentUuid = getUserFromContext().getId();
+
         return userRepository.findById(studentUuid)
                 .map(user -> studentMapper.userToStudentDTO(
                         user, userMapper.userEntityToUserDto(user,
@@ -51,8 +73,8 @@ public class StudentsServiceImpl implements StudentsService {
     }
 
     @Override
-    public List<StudentSubjectCardResponseDTO> getStudentSubjectCards(UUID studentUuid, Integer semesterNumber)
-            throws Exception {
+    public List<StudentSubjectCardResponseDTO> getStudentSubjectCards(Integer semesterNumber) throws Exception {
+        UUID studentUuid = getUserFromContext().getId();
 
         Optional<User> student = userRepository.getUserById(studentUuid);
 
@@ -73,7 +95,9 @@ public class StudentsServiceImpl implements StudentsService {
     }
 
     @Override
-    public List<StudentSubjectCardResponseDTO> getStudentSubjectCards(UUID studentUuid, UUID subjectUuid) {
+    public List<StudentSubjectCardResponseDTO> getStudentSubjectCards(UUID subjectUuid) {
+        UUID studentUuid = getUserFromContext().getId();
+
         Optional<User> student = userRepository.getUserById(studentUuid);
 
         if (student.isEmpty())
@@ -94,7 +118,8 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     public GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid,
-                                       GradeUpdateRequestDTO gradeDTO) {
+                                       GradeUpdateRequestDTO gradeDTO)
+    {
 
         if (userRepository.findById(studentUuid).isEmpty())
             throw new IllegalArgumentException("Student with this id does not exist!");

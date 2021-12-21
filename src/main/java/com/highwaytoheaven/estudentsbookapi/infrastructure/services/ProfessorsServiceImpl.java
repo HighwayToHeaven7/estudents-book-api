@@ -10,18 +10,15 @@ import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.UserRepo
 import com.highwaytoheaven.model.ProfessorDTO;
 import com.highwaytoheaven.model.SubjectResponseDTO;
 import com.highwaytoheaven.model.UserContactDTO;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
+
 @Service
-public class ProfessorsServiceImpl implements ProfessorsService {
+public class ProfessorsServiceImpl extends BasicUsersService implements ProfessorsService {
 
     private final UserRepository userRepository;
     private final ProfessorMapper professorMapper;
@@ -32,19 +29,33 @@ public class ProfessorsServiceImpl implements ProfessorsService {
     private final SubjectCardRepository subjectCardRepository;
     private final SubjectRepository subjectRepository;
 
+    public ProfessorsServiceImpl(UserRepository userRepository, ProfessorMapper professorMapper,
+                                 UserMapper userMapper, ContactDetailsMapper contactDetailsMapper,
+                                 SubjectMapper subjectMapper, StudentMapper studentMapper,
+                                 SubjectCardRepository subjectCardRepository, SubjectRepository subjectRepository)
+    {
+        super(userRepository);
+        this.userRepository = userRepository;
+        this.professorMapper = professorMapper;
+        this.userMapper = userMapper;
+        this.contactDetailsMapper = contactDetailsMapper;
+        this.subjectMapper = subjectMapper;
+        this.studentMapper = studentMapper;
+        this.subjectCardRepository = subjectCardRepository;
+        this.subjectRepository = subjectRepository;
+    }
+
 
     @Override
-    public ProfessorDTO getProfessorDataById(UUID professorUuid) {
-        Optional<User> professor = userRepository.getUserById(professorUuid);
+    public ProfessorDTO getProfessorDataById() {
 
-        if(professor.isEmpty())
-            throw new IllegalArgumentException("There's no professor with this id!");
+        User professor = getUserFromContext();
 
-        return  professorMapper.userToProfessorDTO(professor.get(),
+        return  professorMapper.userToProfessorDTO(professor,
                         userMapper.userEntityToUserDto(
-                                professor.get(),
-                                this.getProfessorContactDetails(professor.get())),
-                        this.getListOfSubjectsWithStudents(professor.get())
+                                professor,
+                                this.getProfessorContactDetails(professor)),
+                        this.getListOfSubjectsWithStudents(professor)
         );
     }
 
@@ -53,15 +64,14 @@ public class ProfessorsServiceImpl implements ProfessorsService {
     }
 
     private List<SubjectResponseDTO> getListOfSubjectsWithStudents(User professor) {
+
         List<Subject> subjects = subjectRepository.getAllByUser(professor);
 
-        return subjects.stream().map(subject -> {
-            return subjectMapper.subjectToSubjectResponseDTO(subject,
-                    subjectCardRepository.getAllBySubjectIdAndSemesterDate(subject.getId(),
-                            new Date(System.currentTimeMillis())).stream().map(sc ->  {
-                                return studentMapper.userToStudent1DTO(sc.getUser());
-                    }).collect(Collectors.toList())
-            );
-        }).collect(Collectors.toList());
+        return subjects.stream().map(subject -> subjectMapper.subjectToSubjectResponseDTO(subject,
+                subjectCardRepository.getAllBySubjectIdAndSemesterDate(subject.getId(),
+                            new Date(System.currentTimeMillis()))
+                        .stream().map(sc -> studentMapper.userToStudent1DTO(sc.getUser()))
+                        .collect(Collectors.toList())
+        )).collect(Collectors.toList());
     }
 }

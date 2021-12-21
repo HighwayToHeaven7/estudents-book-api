@@ -24,14 +24,14 @@ public class StudentsQueryController implements StudentsQueryApi {
     }
 
     @Override
-    public ResponseEntity<StudentDTO> getStudentById(UUID uuid) {
-        return ResponseEntity.ok().body(studentsServiceImpl.getStudentById(uuid));
+    public ResponseEntity<StudentDTO> getStudentById() {
+        return ResponseEntity.ok().body(studentsServiceImpl.getStudentById());
     }
 
     @Override
-    public ResponseEntity<List<StudentSubjectCardResponseDTO>> getStudentCardBySemester(UUID uuid, Integer semester) {
+    public ResponseEntity<List<StudentSubjectCardResponseDTO>> getStudentCardBySemester(Integer semester) {
         try {
-            return ResponseEntity.ok().body(studentsServiceImpl.getStudentSubjectCards(uuid, semester));
+            return ResponseEntity.ok().body(studentsServiceImpl.getStudentSubjectCards(semester));
         } catch (IllegalArgumentException ie) {
             ie.printStackTrace();
             return ResponseEntity.notFound().build();
@@ -42,9 +42,9 @@ public class StudentsQueryController implements StudentsQueryApi {
     }
 
     @Override
-    public ResponseEntity<List<StudentSubjectCardResponseDTO>> getSubjectCardBySubjectId(UUID uuid, UUID uuid1) {
+    public ResponseEntity<List<StudentSubjectCardResponseDTO>> getSubjectCardBySubjectId(UUID uuid) {
         try {
-            return ResponseEntity.ok().body(studentsServiceImpl.getStudentSubjectCards(uuid, uuid1));
+            return ResponseEntity.ok().body(studentsServiceImpl.getStudentSubjectCards(uuid));
         } catch (IllegalArgumentException ie) {
             ie.printStackTrace();
             return ResponseEntity.notFound().build();
