@@ -1,4 +1,4 @@
-package com.highwaytoheaven.estudentsbookapi;
+package com.highwaytoheaven.estudentsbookapi.infrastructure.security;
 
 import com.google.gson.JsonObject;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SecurityConfigTests {
+public class SecurityConfigTest {
 
     @Autowired
     private MockMvc mockMvc;
