@@ -3,6 +3,7 @@ package com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,13 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import static com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-
-    private final String HEADER = "Authorization";
-    private final String PREFIX = "Bearer ";
-    private final String ROLE = "role";
-    private final String SECRET_KEY = "f-103F15%!f4h8A;s";
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -49,25 +48,27 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private Optional<UsernamePasswordAuthenticationToken> getAuthentication(HttpServletRequest request) {
+
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
         String token = request.getHeader(HEADER);
 
         if (token != null) {
-            String user = JWT.require(Algorithm.HMAC512(SECRET_KEY.getBytes()))
+            DecodedJWT verify = JWT.require(Algorithm.HMAC512(SECRET_KEY.getBytes()))
                     .build()
-                    .verify(token.replace(PREFIX, ""))
-                    .getSubject();
+                    .verify(token.replace(PREFIX, ""));
 
-            Claim claim = JWT.require(Algorithm.HMAC512(SECRET_KEY.getBytes()))
-                    .build()
-                    .verify(token.replace(PREFIX, ""))
-                    .getClaim(ROLE);
+            String user = verify.getSubject();
+            Claim claimRole = verify.getClaim(ROLE);
+            Claim claimUuid = verify.getClaim(ID);
 
             if (user != null) {
                 usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null,
-                        List.of(new SimpleGrantedAuthority(claim.asString())));
+                        List.of(new SimpleGrantedAuthority(claimRole.asString())));
+
+                usernamePasswordAuthenticationToken.setDetails(UUID.fromString(claimUuid.asString()));
             }
         }
-        return Optional.of(usernamePasswordAuthenticationToken);
+
+        return Optional.ofNullable(usernamePasswordAuthenticationToken);
     }
 }

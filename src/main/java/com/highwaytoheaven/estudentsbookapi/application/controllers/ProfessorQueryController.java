@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 @RestController
 public class ProfessorQueryController implements ProfessorsQueryApi {
@@ -16,9 +14,9 @@ public class ProfessorQueryController implements ProfessorsQueryApi {
     private final ProfessorsService professorsService;
 
     @Override
-    public ResponseEntity<ProfessorDTO> getProfessorDataById(UUID uuid) {
+    public ResponseEntity<ProfessorDTO> getProfessorDataById() {
         try {
-            return ResponseEntity.ok().body(professorsService.getProfessorDataById(uuid));
+            return ResponseEntity.ok().body(professorsService.getProfessorDataById());
         }catch (IllegalArgumentException iae) {
             iae.printStackTrace();
             return ResponseEntity.notFound().build();

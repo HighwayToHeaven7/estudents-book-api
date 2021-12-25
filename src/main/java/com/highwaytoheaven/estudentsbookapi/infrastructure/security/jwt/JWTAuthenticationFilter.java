@@ -18,12 +18,9 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+import static com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTConstants.*;
 
-    private final String URL = "/users/authenticate";
-    private final String SECRET_KEY = "f-103F15%!f4h8A;s";
-    private final int TIME = 900_000;
-    private final String ROLE = "role";
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final AuthenticationService authService;
@@ -56,6 +53,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = JWT.create().withSubject(((User) authResult.getPrincipal()).getUsername())
                         .withClaim(ROLE, ((User) authResult.getPrincipal()).getRole().toString())
+                        .withClaim(ID, ((User) authResult.getPrincipal()).getId().toString())
                         .withExpiresAt(new Date(System.currentTimeMillis() + TIME))
                         .sign(Algorithm.HMAC512(SECRET_KEY.getBytes()));
 

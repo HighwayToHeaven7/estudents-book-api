@@ -36,8 +36,8 @@ public class StudentsCommandController implements StudentsCommandApi {
     public ResponseEntity<GradeDTO> updateStudentGrade(UUID uuid, UUID uuid1, UUID uuid2,
                                                        @Valid GradeUpdateRequestDTO gradeUpdateRequestDTO) {
         try {
-            return ResponseEntity.ok().body(studentsService.updateStudentGrade(uuid,
-                                                uuid1, uuid2, gradeUpdateRequestDTO));
+            return ResponseEntity.ok().body(studentsService.updateStudentGrade(uuid, uuid1, uuid2,
+                                                                                gradeUpdateRequestDTO));
         } catch (IllegalArgumentException ie){
             ie.printStackTrace();
             return ResponseEntity.notFound().build();
