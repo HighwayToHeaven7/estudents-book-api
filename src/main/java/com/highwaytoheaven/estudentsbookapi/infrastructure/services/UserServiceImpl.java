@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createNewUser(UserCreateRequestDTO userDTO) {
 
-        ContactDetails contactDetails = new ContactDetails(userDTO.getPhoneNumber());
-
+        ContactDetails contactDetails = new ContactDetails();
+        contactDetails.setPhoneNumber(userDTO.getPhoneNumber());
         contactDetailsRepository.save(contactDetails);
 
         User user = User.builder().name(userDTO.getName()).surname(userDTO.getSurname())

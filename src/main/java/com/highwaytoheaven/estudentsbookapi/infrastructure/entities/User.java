@@ -1,21 +1,29 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
-import javax.persistence.*;
+import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.DISABLE;
+import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.NEW;
 
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.Role;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus;
 import com.sun.istack.NotNull;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.DISABLE;
-import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.NEW;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,6 +44,15 @@ public class User extends BasicEntity implements UserDetails {
   private String email;
 
   private String password;
+
+  private String familyName;
+  private String sex;
+  private String studentsAlbumNumber;
+  private String residence;
+  private String province;
+  private String personalIdentityNumber;
+  private String dateOfBirth;
+  private String placeOfBirth;
 
   @Enumerated(EnumType.STRING)
   private UserStatus accountStatus = NEW;
