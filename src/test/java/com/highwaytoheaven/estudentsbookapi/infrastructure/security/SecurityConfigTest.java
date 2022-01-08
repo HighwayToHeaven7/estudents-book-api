@@ -31,25 +31,25 @@ public class SecurityConfigTest {
         ).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 
-    @Test
-    @WithMockUser(authorities="ADMIN")
-    public void postUsersTest() throws Exception {
-        JsonObject json = new JsonObject();
-        json.addProperty("account_status", "ACTIVE");
-        json.addProperty("name", "Name");
-        json.addProperty("surname", "Surname");
-        json.addProperty("role", "STUDENT");
-        json.addProperty("email", "test@student.com");
-        json.addProperty("password", "test");
-        json.addProperty("phone_number", "000000000");
-
-        mockMvc.perform(
-                MockMvcRequestBuilders.post("/users")
-                        .content(json.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-    }
+//    @Test
+//    @WithMockUser(authorities="ADMIN")
+//    public void postUsersTest() throws Exception {
+//        JsonObject json = new JsonObject();
+//        json.addProperty("account_status", "ACTIVE");
+//        json.addProperty("name", "Name");
+//        json.addProperty("surname", "Surname");
+//        json.addProperty("role", "STUDENT");
+//        json.addProperty("email", "test@student.com");
+//        json.addProperty("password", "test");
+//        json.addProperty("phone_number", "000000000");
+//
+//        mockMvc.perform(
+//                MockMvcRequestBuilders.post("/users")
+//                        .content(json.toString())
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//        ).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+//    }
 
     @Test
     @WithMockUser(authorities="PROFESSOR")

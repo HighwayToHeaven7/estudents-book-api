@@ -1,5 +1,6 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.mappers;
 
+import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.ContactDetails;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.User;
 import com.highwaytoheaven.model.StudentDTO;
 import com.highwaytoheaven.model.StudentSubjectCardResponseDTO;
@@ -16,6 +17,9 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring", uses = {ContactDetailsMapper.class})
 public interface UserMapper {
 
+  UserContactDTO mapContact(ContactDetails contact);
+
+  @Mapping(target = "contact", expression = "java( mapContact(user.getContactDetails()) )")
   UserDTO toApi(User user);
 
   default StudentDTO toApi(User user,
