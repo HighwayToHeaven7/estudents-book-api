@@ -1,7 +1,5 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.security;
 
-import static com.highwaytoheaven.estudentsbookapi.infrastructure.security.SecurityConfig.Authority.STUDENT;
-
 import com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTAuthenticationFilter;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.security.jwt.JWTAuthorizationFilter;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.services.AuthenticationService;
@@ -19,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import static com.highwaytoheaven.estudentsbookapi.infrastructure.security.SecurityConfig.Authority.*;
 
 @AllArgsConstructor
 @Configuration
@@ -59,20 +59,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers(HttpMethod.POST, "/users/auth").permitAll()
         .antMatchers(HttpMethod.GET, "/users/students").hasAuthority(STUDENT.toString())
-        .antMatchers(HttpMethod.GET, "/users/new").hasAuthority("ADMIN")
-        .antMatchers(HttpMethod.GET, "/users").hasAuthority("ADMIN")
-        .antMatchers(HttpMethod.GET, "/users/professors/**").hasAuthority("PROFESSOR")
-        .antMatchers(HttpMethod.GET, "/users/students/groups").hasAuthority("PROFESSOR")
+        .antMatchers(HttpMethod.GET, "/users/students/all").hasAuthority(ADMIN.toString())
+        .antMatchers(HttpMethod.GET, "/users/professors/all").hasAuthority(ADMIN.toString())
+        .antMatchers(HttpMethod.POST, "/users").hasAuthority(ADMIN.toString())
+        .antMatchers(HttpMethod.GET, "/users/professors/**").hasAuthority(PROFESSOR.toString())
+        .antMatchers(HttpMethod.GET, "/users/students/groups").hasAuthority(PROFESSOR.toString())
         .antMatchers(HttpMethod.GET, "/users/students/subject-cards/semesters/{semester-number}")
-        .hasAuthority("STUDENT")
+        .hasAuthority(STUDENT.toString())
         .antMatchers(HttpMethod.GET, "/users/students/subject-cards/subjects/{subject-uuid}")
-        .hasAuthority("STUDENT")
-//                    .antMatchers(HttpMethod.POST, "/users/students/{student-uuid}/subject-cards/{subject-card-uuid}/grades/")
-//                    .hasAuthority("PROFESSOR")
-//                    .antMatchers(HttpMethod.PATCH,"/users/students/{student-uuid}/subject-cards/{subject-card-uuid}/grades/{grade-uuid}")
-//                    .hasAuthority("PROFESSOR")
+        .hasAuthority(STUDENT.toString())
         .antMatchers("/users/students/{student-uuid}/subject-cards/{subject-card-uuid}/**")
-        .hasAuthority("PROFESSOR")
+        .hasAuthority(PROFESSOR.toString())
         .anyRequest().authenticated()
         .and()
         .addFilter(new JWTAuthenticationFilter(authenticationManager(), authService))

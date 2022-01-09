@@ -29,13 +29,23 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDTO> getNewUsers() {
-        List<User> newUsers = userRepository.getUsersByAccountStatusIsNew();
+    public List<UserDTO> getListOfStudents() {
+        List<User> students = userRepository.getUsersByRole(Role.STUDENT);
 
-        return newUsers.stream().map(x -> userMapper.userEntityToUserDto(x,
+        return students.stream().map(x -> userMapper.userEntityToUserDto(x,
                 contactDetailsMapper.contactDetailsToUserContactDto(x.getContactDetails())))
-                .collect(Collectors.toList());
+                .limit(50).collect(Collectors.toList());
     }
+
+    @Override
+    public List<UserDTO> getListOfProfessors() {
+        List<User> professors = userRepository.getUsersByRole(Role.PROFESSOR);
+
+        return professors.stream().map(x -> userMapper.userEntityToUserDto(x,
+                        contactDetailsMapper.contactDetailsToUserContactDto(x.getContactDetails())))
+                .limit(50).collect(Collectors.toList());
+    }
+
 
     @Override
     public UserDTO createNewUser(UserCreateRequestDTO userDTO) {

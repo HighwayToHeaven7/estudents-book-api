@@ -23,9 +23,19 @@ public class SecurityConfigTest {
 
     @Test
     @WithMockUser(authorities="ADMIN")
-    public void getUsersNewTest() throws Exception {
+    public void getListOfStudentsTest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/users/new")
+                MockMvcRequestBuilders.get("/users/students/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+    }
+
+    @Test
+    @WithMockUser(authorities="ADMIN")
+    public void getListOfProfessorsTest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/professors/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();

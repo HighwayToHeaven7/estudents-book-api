@@ -24,8 +24,8 @@ public class StudentsQueryController implements StudentsQueryApi {
     }
 
     @Override
-    public ResponseEntity<StudentDTO> getStudentById() {
-        return ResponseEntity.ok().body(studentsServiceImpl.getStudentById());
+    public ResponseEntity<StudentDTO> getStudent() {
+        return ResponseEntity.ok().body(studentsServiceImpl.getStudent());
     }
 
     @Override

@@ -61,12 +61,13 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
     }
 
     @Override
-    public StudentDTO getStudentById() {
+    public StudentDTO getStudent() {
         UUID studentUuid = getUserFromContext().getId();
-        User userById = userRepository.findById(studentUuid).orElseThrow();
-        List<StudentSubjectCardResponseDTO> cards = getStudentSubjectCardResponseDTOs(
-            userById);
-        return userMapper.toApi(userById, cards);
+
+        User user = userRepository.findById(studentUuid).orElseThrow();
+
+        List<StudentSubjectCardResponseDTO> cards = getStudentSubjectCardResponseDTOs(user);
+        return userMapper.toApi(user, cards);
     }
 
     @Override

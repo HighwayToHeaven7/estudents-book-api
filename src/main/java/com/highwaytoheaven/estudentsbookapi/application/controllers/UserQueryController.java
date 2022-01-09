@@ -17,7 +17,12 @@ public class UserQueryController implements UserQueryApi {
   private final UserService userService;
 
   @Override
-  public ResponseEntity<List<UserDTO>> getNewUsers() {
-    return ResponseEntity.ok().body(userService.getNewUsers());
+  public ResponseEntity<List<UserDTO>> getProfessors() {
+    return ResponseEntity.ok().body(userService.getListOfProfessors());
+  }
+
+  @Override
+  public ResponseEntity<List<UserDTO>> getStudents() {
+    return ResponseEntity.ok().body(userService.getListOfStudents());
   }
 }
