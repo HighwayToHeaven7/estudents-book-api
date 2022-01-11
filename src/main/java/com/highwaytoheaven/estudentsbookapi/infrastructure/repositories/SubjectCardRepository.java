@@ -22,4 +22,6 @@ public interface SubjectCardRepository extends JpaRepository<SubjectCard, UUID> 
     @Query("SELECT s FROM SubjectCard s WHERE s.subject.id = :subjectId AND :now >= s.semester.semesterStartDate " +
             "AND :now <= s.semester.semesterEndDate")
     List<SubjectCard> getAllBySubjectIdAndSemesterDate(@Param("subjectId") UUID subjectUuid, @Param("now") Date date);
+
+    boolean existsBySubjectAndUser(Subject subject, User user);
 }

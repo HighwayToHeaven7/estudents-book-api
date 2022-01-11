@@ -55,7 +55,7 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
     @Override
     public List<GroupWithStudentsResponseDTO> getListOfGroupsWithStudents() {
         List<Semester> semestersWithGroupNames = semesterRepository
-                .getAllBySemesterDate(new Date(System.currentTimeMillis()));
+                .getAllByDate(new Date(System.currentTimeMillis()));
 
         return getGroupWithStudentsResponseDTOs(semestersWithGroupNames);
     }

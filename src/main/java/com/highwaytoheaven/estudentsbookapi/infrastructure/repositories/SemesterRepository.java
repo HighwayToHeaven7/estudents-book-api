@@ -14,7 +14,28 @@ import java.util.UUID;
 public interface SemesterRepository extends JpaRepository<Semester, UUID> {
 
     @Query("SELECT s FROM Semester s WHERE :now >= s.semesterStartDate AND :now <= s.semesterEndDate")
-    List<Semester> getAllBySemesterDate(@Param("now")Date now);
+    List<Semester> getAllByDate(@Param("now")Date now);
+
+    @Query("SELECT s FROM Semester s WHERE :now >= s.semesterStartDate AND :now <= s.semesterEndDate " +
+            "AND s.groupName = :groupName AND :student member s.usersList")
+    Optional<Semester> getSemesterByGroupNameAndDateAndStudent(@Param("groupName")String groupName,
+                                                     @Param("now")Date now,
+                                                     @Param("student")User student);
+
+    @Query("SELECT s FROM Semester s WHERE :now >= s.semesterStartDate AND :now <= s.semesterEndDate " +
+            "AND :student member s.usersList")
+    Optional<Semester> getSemesterByDateAndStudent(@Param("now")Date now,  @Param("student")User student);
+
+
+    @Query("SELECT MAX(s.semesterNumber) FROM Semester s WHERE :student member s.usersList")
+    Optional<Integer> getLatestSemesterNumberByUser(@Param("student")User student);
+
+
+    @Query("SELECT s FROM Semester s WHERE :student member s.usersList AND s.semesterNumber = :semesterNumber")
+    Optional<Semester> getLatestSemesterByStudentAndSemesterNumber(@Param("student")User student,
+                                                                   @Param("semesterNumber")Integer semesterNumber);
+
 
     Optional<Semester> getSemesterBySemesterNumberAndUsersListContaining(Integer semesterNumber, User user);
+    Optional<Semester> getSemesterBySemesterEndDateGreaterThanEqualAndSemesterStartDateLessThanEqualAndUsersListContaining(Date now, Date now1, User user);
 }
