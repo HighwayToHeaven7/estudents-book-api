@@ -1,8 +1,5 @@
 package com.highwaytoheaven.estudentsbookapi.infrastructure.entities;
 
-import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.DISABLE;
-import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.NEW;
-
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.Role;
 import com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus;
 import com.sun.istack.NotNull;
@@ -24,6 +21,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import static com.highwaytoheaven.estudentsbookapi.infrastructure.entities.enums.UserStatus.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -55,7 +54,7 @@ public class User extends BasicEntity implements UserDetails {
   private String placeOfBirth;
 
   @Enumerated(EnumType.STRING)
-  private UserStatus accountStatus = NEW;
+  private UserStatus accountStatus = ACTIVE;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -78,21 +77,21 @@ public class User extends BasicEntity implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return !accountStatus.equals(DISABLE) && !accountStatus.equals(NEW);
+    return !accountStatus.equals(DISABLE);
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return !accountStatus.equals(DISABLE) && !accountStatus.equals(NEW);
+    return !accountStatus.equals(DISABLE);
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return !accountStatus.equals(DISABLE) && !accountStatus.equals(NEW);
+    return !accountStatus.equals(DISABLE);
   }
 
   @Override
   public boolean isEnabled() {
-    return !accountStatus.equals(DISABLE) && !accountStatus.equals(NEW);
+    return !accountStatus.equals(DISABLE);
   }
 }
