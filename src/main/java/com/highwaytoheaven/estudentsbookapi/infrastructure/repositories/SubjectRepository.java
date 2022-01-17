@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface SubjectRepository extends JpaRepository<Subject, UUID> {
     Optional<Subject> getSubjectById(UUID uuid);
     List<Subject> getAllByUser(User user);
+    List<Subject> findAll();
 }

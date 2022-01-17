@@ -8,12 +8,15 @@ import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.SubjectR
 import com.highwaytoheaven.estudentsbookapi.infrastructure.repositories.UserRepository;
 import com.highwaytoheaven.model.SubjectCreateRequestDTO;
 import com.highwaytoheaven.model.SubjectDTO;
+import com.highwaytoheaven.model.SubjectDetailsDTO;
 import com.highwaytoheaven.model.SubjectPatchRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -57,5 +60,11 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepo.save(subject);
 
         return subjectMapper.subjectToSubjectDTO(subject);
+    }
+
+    @Override
+    public List<SubjectDetailsDTO> getListOfSubjects() {
+        return subjectRepo.findAll().stream().map(subjectMapper::subjectToSubjectDetailsDTO)
+                .collect(Collectors.toList());
     }
 }

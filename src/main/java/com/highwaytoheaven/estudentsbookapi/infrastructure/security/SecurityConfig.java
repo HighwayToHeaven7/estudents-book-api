@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/users/students").hasAuthority(STUDENT.toString())
         .antMatchers(HttpMethod.GET, "/users/students/all").hasAuthority(ADMIN.toString())
         .antMatchers(HttpMethod.GET, "/users/professors/all").hasAuthority(ADMIN.toString())
+        .antMatchers(HttpMethod.GET, "/subjects/all").hasAuthority(ADMIN.toString())
         .antMatchers(HttpMethod.PATCH, "/subjects/{subject-uuid}").hasAuthority(ADMIN.toString())
         .antMatchers(HttpMethod.POST, "/subjects").hasAuthority(ADMIN.toString())
         .antMatchers(HttpMethod.POST, "/subject-cards").hasAuthority(ADMIN.toString())
