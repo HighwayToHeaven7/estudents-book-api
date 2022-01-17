@@ -93,10 +93,8 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
     }
 
     @Override
-    public List<StudentSubjectCardResponseDTO> getStudentSubjectCards(UUID subjectUuid) {
-        UUID studentUuid = getUserFromContext().getId();
-
-        Optional<User> student = userRepository.getUserById(studentUuid);
+    public List<StudentSubjectCardResponseDTO> getStudentSubjectCards(UUID studentUUID, UUID subjectUuid) {
+        Optional<User> student = userRepository.getUserById(studentUUID);
 
         if (student.isEmpty())
             throw new IllegalArgumentException("Student with this id does not exist!");
@@ -115,17 +113,21 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
 
 
     @Override
-    public GradeDTO updateStudentGrade(UUID studentUuid, UUID subjectCardUuid, UUID gradeUuid,
-                                       GradeUpdateRequestDTO gradeDTO) throws Exception
-    {
+    public GradeDTO updateStudentGrade(UUID gradeUUID, GradeRequestDTO gradeDTO) throws Exception {
+        Optional<User> student = userRepository.findById(gradeDTO.getStudentUuid());
 
-        if (userRepository.findById(studentUuid).isEmpty())
+        if (student.isEmpty())
             throw new IllegalArgumentException("Student with this id does not exist!");
 
-        if (subjectCardRepository.findById(subjectCardUuid).isEmpty())
-            throw new IllegalArgumentException("SubjectCard with this id does not exist!");
+        Optional<Subject> subjectCard = subjectRepository.findById(gradeDTO.getSubjectUuid());
 
-        Optional<Grade> gradeOptional = gradeRepository.findById(gradeUuid);
+        if (subjectCard.isEmpty())
+            throw new IllegalArgumentException("Subject with this id does not exist!");
+
+        if (subjectCardRepository.getSubjectCardByUserAndSubject(student.get(), subjectCard.get()).isEmpty())
+            throw new Exception("Subject card not exists!");
+
+        Optional<Grade> gradeOptional = gradeRepository.findById(gradeUUID);
 
         if (gradeOptional.isEmpty())
             throw new IllegalArgumentException("Grade with this id does not exist!");
@@ -154,10 +156,10 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
     }
 
     @Override
-    public GradeDTO createNewGrade(GradeCreateRequestDTO gradeCreateRequestDTO) throws Exception {
+    public GradeDTO createNewGrade(GradeRequestDTO gradeRequestDTO) throws Exception {
 
-        Optional<User> user = userRepository.getUserById(gradeCreateRequestDTO.getStudentUuid());
-        Optional<Subject> subject = subjectRepository.getSubjectById(gradeCreateRequestDTO.getSubjectUuid());
+        Optional<User> user = userRepository.getUserById(gradeRequestDTO.getStudentUuid());
+        Optional<Subject> subject = subjectRepository.getSubjectById(gradeRequestDTO.getSubjectUuid());
 
         if (user.isEmpty() || subject.isEmpty())
             throw new IllegalArgumentException();
@@ -170,8 +172,8 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
         Optional<Double> value = Optional.empty();
 
         try{
-            value = converter.convertValueToType(gradeCreateRequestDTO.getGrade(),
-                    GradeType.valueOf(gradeCreateRequestDTO.getGradeType()));
+            value = converter.convertValueToType(gradeRequestDTO.getGrade(),
+                    GradeType.valueOf(gradeRequestDTO.getGradeType()));
 
         }catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -181,9 +183,9 @@ public class StudentsServiceImpl extends BasicUsersService implements StudentsSe
             throw new Exception("Empty converted grade value!");
 
         Grade newGrade = Grade.builder().value(value.get())
-                .gradeType(GradeType.valueOf(gradeCreateRequestDTO.getGradeType()))
-                .weight(Double.valueOf(gradeCreateRequestDTO.getGradeWeight()))
-                .description(gradeCreateRequestDTO.getGradeDescription())
+                .gradeType(GradeType.valueOf(gradeRequestDTO.getGradeType()))
+                .weight(Double.valueOf(gradeRequestDTO.getGradeWeight()))
+                .description(gradeRequestDTO.getGradeDescription())
                 .subjectCard(subjectCard.get()).build();
 
         gradeRepository.save(newGrade);
