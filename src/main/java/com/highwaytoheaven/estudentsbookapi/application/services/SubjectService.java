@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SubjectService {
-
     SubjectDTO createSubject(@Valid SubjectCreateRequestDTO subjectCreateRequestDTO) throws Exception;
     SubjectDTO setNewProfessorToSubject(UUID uuid, @Valid SubjectPatchRequestDTO subjectPatchRequestDTO) throws Exception;
     List<SubjectDetailsDTO> getListOfSubjects();
